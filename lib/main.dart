@@ -18,7 +18,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      theme: ThemeData(useMaterial3: true),
       title: 'Sales Histogram',
       home: SalesHistogram(),
     );
@@ -39,24 +40,48 @@ class _SalesHistogramState extends State<SalesHistogram> {
     final List<List<dynamic>> data =
         const CsvToListConverter(fieldDelimiter: ';').convert(rawData);
 
-    setState(() {
-      salesData.clear();
-      for (int i = 1; i < data.length; i++) {
-        String month = rawData[i].toString();
-        int totalSales = int.tryParse(rawData[i].toString()) ?? 0;
+    for (int i = 0; i < data.length; i++) {
+      String month = data[i][0].toString();
+      if (data[i][1] is int) {
+        int totalSales = int.tryParse(data[i][1].toString()) ?? 0;
         SalesData salesDatum = SalesData(month, totalSales);
         salesData.add(salesDatum);
-
-        // salesData.add(SalesData(element[0], int.parse(element[1])));
+      } else {
+        // SalesData salesDatum = SalesData(month, data[i][1]);
+        // salesData.add(salesDatum);
       }
-    });
+
+      // salesData.add(SalesData(element[0], int.parse(element[1])));
+
+      // if (rawData[i][1] is int) {
+      //   int totalSales = int.tryParse(rawData[i][1].toString()) ?? 0;
+      //   SalesData salesDatum = SalesData(month, totalSales);
+      //   salesData.add(salesDatum);
+      // } else {
+      //   String totalSales = rawData[i][1];
+      //   SalesData salesDatum = SalesData(month, totalSales);
+      //   salesData.add(salesDatum);
+      // }
+      // }
+
+      // setState(() {
+      //   salesData.clear();
+      //   for (int i = 1; i < data.length; i++) {
+      //     String month = rawData[i].toString();
+      //     int totalSales = int.tryParse(rawData[i].toString()) ?? 0;
+      //     SalesData salesDatum = SalesData(month, totalSales);
+      //     salesData.add(salesDatum);
+
+      //     // salesData.add(SalesData(element[0], int.parse(element[1])));
+    }
+    // }); [i][0] [i][1]
   }
 
-  @override
-  void initState() {
-    super.initState();
-    loadSalesData();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   loadSalesData();
+  // }
 
   @override
   Widget build(BuildContext context) {
